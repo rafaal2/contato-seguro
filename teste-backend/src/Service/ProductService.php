@@ -15,20 +15,20 @@ class ProductService
     public function getAll($adminUserId, $filters = [])
     {
         $query = "
-        SELECT 
-            p.*, 
-            GROUP_CONCAT(c.title) AS categories
-        FROM 
-            product p
-        LEFT JOIN 
-            product_category pc ON pc.product_id = p.id
-        LEFT JOIN 
-            category c ON c.id = pc.cat_id
-        WHERE 
-            p.company_id = (
-                SELECT company_id FROM admin_user WHERE id = :admin_user_id
-            )
-    ";
+            SELECT 
+                p.*, 
+                c.title AS category
+            FROM 
+                product p
+            LEFT JOIN 
+                product_category pc ON pc.product_id = p.id
+            LEFT JOIN 
+                category c ON c.id = pc.cat_id
+            WHERE 
+                p.company_id = (
+                    SELECT company_id FROM admin_user WHERE id = :admin_user_id
+                )
+        ";
 
         if (isset($filters['active'])) {
             $query .= " AND p.active = :active";
@@ -218,5 +218,30 @@ class ProductService
         $stm->execute();
 
         return $stm;
+    }
+    public function getLastPriceChange($productId)
+    {
+        $query = "
+        SELECT 
+            pl.admin_user_id,
+            au.name AS admin_user_name,
+            pl.timestamp
+        FROM 
+            product_log pl
+        INNER JOIN 
+            admin_user au ON pl.admin_user_id = au.id
+        WHERE 
+            pl.product_id = :product_id
+            AND pl.action = 'update'
+        ORDER BY 
+            pl.timestamp DESC
+        LIMIT 1
+    ";
+
+        $stm = $this->pdo->prepare($query);
+        $stm->bindParam(':product_id', $productId, \PDO::PARAM_INT);
+        $stm->execute();
+
+        return $stm->fetch(\PDO::FETCH_ASSOC);
     }
 }

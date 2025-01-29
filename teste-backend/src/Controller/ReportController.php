@@ -28,8 +28,9 @@ class ReportController
             'Nome da Empresa',
             'Nome do Produto',
             'Valor do Produto',
-            'Categorias do Produto',
+            'Categoria do Produto',
             'Data de Criação',
+            'Última Alteração de Preço',
             'Logs de Alterações'
         ];
 
@@ -38,7 +39,7 @@ class ReportController
 
         foreach ($products as $i => $product) {
             $stm = $this->companyService->getNameById($product->company_id);
-            $companyName = $stm->fetch()->name;
+            $companyName = $stm->fetch()->name ?? 'Empresa não encontrada';
 
             $stm = $this->productService->getLog($product->id);
             $productLogs = $stm->fetchAll();
@@ -53,20 +54,34 @@ class ReportController
                 );
             }
 
-            $data[$i + 1][] = $product->id;
-            $data[$i + 1][] = $companyName;
-            $data[$i + 1][] = $product->title;
-            $data[$i + 1][] = $product->price;
-            $data[$i + 1][] = $product->categories;
-            $data[$i + 1][] = $product->created_at;
-            $data[$i + 1][] = implode(', ', $formattedLogs);
+            $lastPriceChange = $this->productService->getLastPriceChange($product->id);
+            $lastPriceChangeInfo = $lastPriceChange
+                ? sprintf(
+                    "%s (%s)",
+                    $lastPriceChange['admin_user_name'],
+                    date('d/m/Y H:i:s', strtotime($lastPriceChange['timestamp']))
+                )
+                : 'Nenhuma alteração';
+
+            $category = !empty($product->category) ? $product->category : 'Sem categoria';
+
+            $data[$i + 1] = [
+                $product->id,
+                $companyName,
+                $product->title,
+                $product->price,
+                $category,
+                $product->created_at,
+                $lastPriceChangeInfo,
+                implode(', ', $formattedLogs)
+            ];
         }
 
         $report = "<table style='font-size: 10px;'>";
         foreach ($data as $row) {
             $report .= "<tr>";
             foreach ($row as $column) {
-                $report .= "<td>{$column}</td>";
+                $report .= "<td style='padding: 5px;'>{$column}</td>";
             }
             $report .= "</tr>";
         }

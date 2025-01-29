@@ -23,11 +23,13 @@ class ProductController
     {
         $adminUserId = $request->getHeader('admin_user_id')[0];
 
-        $stm = $this->service->getAll($adminUserId);
+        $queryParams = $request->getQueryParams();
+
+        $stm = $this->service->getAll($adminUserId, $queryParams);
+
         $response->getBody()->write(json_encode($stm->fetchAll()));
         return $response->withStatus(200)->withHeader('Content-Type', 'application/json');
     }
-
     public function getOne(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $adminUserId = $request->getHeader('admin_user_id')[0];

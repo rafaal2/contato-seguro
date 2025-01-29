@@ -70,7 +70,7 @@ Para a listagem de produtos:
 - [x] Gostaria de saber qual usuário mudou o preço do produto `iphone 8` por último.
 
 ### Extra
-- [ ] Aqui fica um desafio extra **opcional**: _criar um ambiente com_ Docker _para a api_.
+- [x] Aqui fica um desafio extra **opcional**: _criar um ambiente com_ Docker _para a api_.
 
 **Seu trabalho é atender às 7 demandas solicitadas pelo cliente.**
 
@@ -82,13 +82,114 @@ Boa sorte! :)
 
 ## Suas Respostas, Duvidas e Observações
 [Adicione  aqui suas respostas, dúvidas e observações]
-### 1. so modifiquei a consulta do get all
-### 2. precisei modificar a consulta do getone e o seu controller
-### 3. adicionei um GROUP_CONCAT(c.title) AS categories para combinar as categorias de um produto com o mesmo titulo
-### 4.Adicionado filtro dinâmico no SQL para o campo active, controlado pela query string (?active=1/0). Permite listar apenas produtos ativos ou inativos.
-### 5. Adicionado filtro dinâmico no SQL para o campo category_id, controlado pela query string (?category_id=3). Permite listar produtos vinculados a uma categoria específica.
-### 6.Adicionada cláusula ORDER BY p.created_at DESC no SQL. Todos os produtos são retornados em ordem decrescente de data de cadastro por padrão.
-### 7.Ajustei o método getLog no ProductService para realizar um JOIN com a tabela admin_user, recuperando o nome do administrador associado ao admin_user_id, Formatei os logs no ReportController para exibir (Nome do usuário, Tipo de alteração, Data) usando sprintf e transformei os logs em uma string com implode, Atualizei a tabela do relatório para incluir a coluna de logs formatados corretamente.
-### 8.Adicionei uma query no getLastPriceUpdate($productId) para buscar o último registro de alteração de preço na tabela product_log, ordenado por timestamp em ordem decrescente, Retornei o nome do admin_user correspondente a essa alteração usando um JOIN entre product_log e admin_user.
 
-melhorar readme
+1= so modifiquei a consulta do get all adicionando o pc.cat_id para puxar pelo id da categoria e nao do produto 
+
+2= alguns produtos vinham como null na pesquisa individual entao precisei modificar a consulta do getone e o seu controller, ajustando o filtro que so buscava se tivesse company_id
+
+3= adicionei um GROUP_CONCAT(c.title) AS categories para combinar as categorias de um produto com o mesmo titulo, 
+
+![Descrição da imagem](teste-backend/ImgCategories.png)
+
+4=Adicionado filtro no SQL para o campo active, controlado pela query (?active=1/0). Permite filtrar apenas produtos ativos ou inativos.
+
+5=Adicionado filtro no SQL para o campo category_id, controlado pela (?category_id=3). Permite filtrar pela categoria selecionada.
+
+6=Adicionada cláusula ORDER BY p.created_at DESC no SQL. Todos os produtos são retornados em ordem decrescente de data de cadastro por padrão.
+
+codigo com os filtros das respostas 4,5 e com o ordenamento da 6
+
+        if (isset($filters['active'])) {
+            $query .= " AND p.active = :active";
+        }
+
+        if (isset($filters['category_id'])) {
+            $query .= " AND c.id = :category_id";
+        }
+
+        $query .= " GROUP BY p.id ORDER BY p.created_at DESC";
+
+        $stm = $this->pdo->prepare($query);
+
+
+        $stm->bindParam(':admin_user_id', $adminUserId, \PDO::PARAM_INT);
+
+
+        if (isset($filters['active'])) {
+            $stm->bindParam(':active', $filters['active'], \PDO::PARAM_INT);
+        }
+
+        if (isset($filters['category_id'])) {
+            $stm->bindParam(':category_id', $filters['category_id'], \PDO::PARAM_INT);
+        }
+
+        $stm->execute();
+        return $stm;
+
+endpoints:  http://localhost:8000/products?category_id=5 e http://localhost:8000/products?active=1
+justificativa: optei por filtros no mesmo endpoint para seguir o padrao rest
+
+7= Ajustei o método getLog no ProductService para realizar um JOIN com a tabela admin_user, recuperando o nome do administrador associado ao admin_user_id, 
+  Formatei os logs no ReportController para exibir (Nome do usuário, Tipo de alteração, Data) usando sprintf e transformei os logs em uma string com implode, Atualizei um pouco a tabela do relatório para incluir a coluna de logs formatados corretamente.
+
+    public function getLog($productId)
+    {
+        $query = "
+    SELECT 
+        pl.action,
+        pl.timestamp,
+        au.name AS admin_user_name
+    FROM 
+        product_log pl
+    INNER JOIN 
+        admin_user au ON pl.admin_user_id = au.id
+    WHERE 
+        pl.product_id = :product_id
+    ";
+
+        $stm = $this->pdo->prepare($query);
+        $stm->bindParam(':product_id', $productId, \PDO::PARAM_INT);
+        $stm->execute();
+
+        return $stm;
+    }
+
+8= criei uma funçao getLastPriceChange a qual me retorna o usuario e horario que fez um update no produto e joguei em uma nova coluna do report.
+
+    public function getLastPriceChange($productId)
+    {
+      $query = "
+    SELECT
+      pl.admin_user_id,
+      au.name AS admin_user_name,
+    pl.timestamp
+    FROM
+      product_log pl
+      INNER JOIN
+    admin_user au ON pl.admin_user_id = au.id
+    WHERE
+    pl.product_id = :product_id
+       AND pl.action = 'update'
+    ORDER BY
+        pl.timestamp DESC
+    LIMIT 1
+    ";
+        $stm = $this->pdo->prepare($query);
+        $stm->bindParam(':product_id', $productId, \PDO::PARAM_INT);
+        $stm->execute();
+
+        return $stm->fetch(\PDO::FETCH_ASSOC);
+    }
+
+   ![Descrição da imagem](teste-backend/ImgLastPrice.png)
+
+9= criei um dockerfile para criar a imagem do container e definir dependecias, um compose para gerenciar o container na raiz do projeto para rodar na porta 8000, 
+e por fim um script .sh para garantir que as dependencias do composer e o server do php rodem quando for executado, a seguir imagens do contanier em funcionamento local e na AWS em uma instancia ec2
+
+![Descrição da imagem](teste-backend/ImgContainer.png)
+![Descrição da imagem](teste-backend/ImgResult.png)
+![Descrição da imagem](teste-backend/ImgAws.png)
+
+
+
+

@@ -4,7 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ee92190b-7d4f-452d-b9cc-652107a791a8" name="Changes" comment="" />
+    <list default="true" id="ee92190b-7d4f-452d-b9cc-652107a791a8" name="Changes" comment="banco no container">
+      <change afterPath="$PROJECT_DIR$/teste-backend/ImgAws.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/teste-backend/ImgCategories.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/teste-backend/ImgContainer.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/teste-backend/ImgLastPrice.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/teste-backend/ImgResult.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/teste-backend/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/teste-backend/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/teste-backend/src/Controller/ProductController.php" beforeDir="false" afterPath="$PROJECT_DIR$/teste-backend/src/Controller/ProductController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/teste-backend/src/Controller/ReportController.php" beforeDir="false" afterPath="$PROJECT_DIR$/teste-backend/src/Controller/ReportController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/teste-backend/src/Service/ProductService.php" beforeDir="false" afterPath="$PROJECT_DIR$/teste-backend/src/Service/ProductService.php" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -73,7 +84,8 @@
     "PHP Script.index.php.executor": "Run",
     "PHP Script.routes.php.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "C:/xampp/htdocs/teste-backend-estag",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/xampp/htdocs/teste-backend-estag/teste-backend/ImgContanier.png",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -88,6 +100,11 @@
     ]
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\teste-backend-estag\teste-backend" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="Unnamed" type="PhpLocalRunConfigurationType" factoryName="PHP Console" nameIsGenerated="true" path="$PROJECT_DIR$/teste-backend/public/index.php">
       <method v="2" />
@@ -115,6 +132,7 @@
       <workItem from="1738081971178" duration="30424000" />
       <workItem from="1738176107352" duration="4832000" />
       <workItem from="1738181028616" duration="212000" />
+      <workItem from="1738181257271" duration="6335000" />
     </task>
     <task id="LOCAL-00001" summary="-.">
       <option name="closed" value="true" />
@@ -164,7 +182,15 @@
       <option name="project" value="LOCAL" />
       <updated>1738180017159</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="banco no container">
+      <option name="closed" value="true" />
+      <created>1738181287906</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1738181287906</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
