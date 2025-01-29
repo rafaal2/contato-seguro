@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  api:
+    container_name: api
+    build: .
+    command: ./.docker/entrypoint.sh
+    volumes:
+      - .:/var/www/html/api
+    ports:
+      - "8000:8000"
