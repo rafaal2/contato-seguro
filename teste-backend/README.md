@@ -187,9 +187,9 @@ justificativa: optei por filtros no mesmo endpoint para seguir o padrao rest
 e por fim um script .sh para garantir que as dependencias do composer e o server do php rodem quando for executado, a seguir imagens do contanier em funcionamento local e na AWS em uma instancia ec2
 
 ![Descrição da imagem](ImgContainer.png)
-/br
+<br>
 ![Descrição da imagem](ImgResult.png)
-/br
+<br>
 ![Descrição da imagem](ImgAws.png)
 
 
