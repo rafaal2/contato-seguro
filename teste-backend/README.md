@@ -89,7 +89,7 @@ Boa sorte! :)
 
 3= adicionei um GROUP_CONCAT(c.title) AS categories para combinar as categorias de um produto com o mesmo titulo, 
 
-![Descrição da imagem](teste-backend/ImgCategories.png)
+![Descrição da imagem](ImgCategories.png)
 
 4=Adicionado filtro no SQL para o campo active, controlado pela query (?active=1/0). Permite filtrar apenas produtos ativos ou inativos.
 
@@ -181,14 +181,14 @@ justificativa: optei por filtros no mesmo endpoint para seguir o padrao rest
         return $stm->fetch(\PDO::FETCH_ASSOC);
     }
 
-   ![Descrição da imagem](teste-backend/ImgLastPrice.png)
+   ![Descrição da imagem](ImgLastPrice.png)
 
 9= criei um dockerfile para criar a imagem do container e definir dependecias, um compose para gerenciar o container na raiz do projeto para rodar na porta 8000, 
 e por fim um script .sh para garantir que as dependencias do composer e o server do php rodem quando for executado, a seguir imagens do contanier em funcionamento local e na AWS em uma instancia ec2
 
-![Descrição da imagem](teste-backend/ImgContainer.png)
-![Descrição da imagem](teste-backend/ImgResult.png)
-![Descrição da imagem]([teste-backend/ImgAws.png](https://github.com/rafaal2/contato-seguro/blob/main/teste-backend/ImgAws.png))
+![Descrição da imagem](/ImgContainer.png)
+![Descrição da imagem](ImgResult.png)
+![Descrição da imagem](ImgAws.png)
 
 
 
